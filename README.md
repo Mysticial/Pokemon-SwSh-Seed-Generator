@@ -8,7 +8,7 @@ Requirements:
 
 To use:
  1. Modify Main.cpp with the desired stats and filters.
- 2. Then compile and run.
+ 2. Compile and run.
 
 The program will automatically print out any matching seeds that it finds as well as how many skips away from the starting seed.
 
