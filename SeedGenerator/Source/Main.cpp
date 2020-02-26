@@ -69,7 +69,7 @@ int main(){
         {31, 0, 31, 31, 31, 0},
         2,
         Nature::Quiet,
-        Gender::UNSPECIFIED,
+        Gender::FEMALE,
     };
 
     //  Starting seed.

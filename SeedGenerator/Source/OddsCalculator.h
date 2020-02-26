@@ -37,21 +37,18 @@ double odds_gender(GenderRatio ratio, Gender filter){
         return 1;
     }
     switch (ratio){
-        case GenderRatio::MALE_88:
-            return filter == Gender::FEMALE ? 8 : 7/8.;
-            break;
-        case GenderRatio::MALE_75:
-            return filter == Gender::FEMALE ? 4 : 3/4.;
-            break;
-        case GenderRatio::EVEN:
-            return 2;
-            break;
-        case GenderRatio::FEMALE_75:
-            return filter == Gender::FEMALE ? 3/4. : 4;
-            break;
-        case GenderRatio::FEMALE_88:
-            return filter == Gender::FEMALE ? 7/8. : 8;
-            break;
+    case GenderRatio::MALE_88:
+        return filter == Gender::FEMALE ? 8 : 7/8.;
+    case GenderRatio::MALE_75:
+        return filter == Gender::FEMALE ? 4 : 3/4.;
+    case GenderRatio::EVEN:
+        return 2;
+    case GenderRatio::FEMALE_75:
+        return filter == Gender::FEMALE ? 3/4. : 4;
+    case GenderRatio::FEMALE_88:
+        return filter == Gender::FEMALE ? 7/8. : 8;
+    default:
+        return 1;
     }
 }
 
@@ -87,16 +84,13 @@ double odds_ivs(int max_ivs, const int filter_ivs[6]){
             {15360, 15360, 15360, 15360, 15360, 0, 0},                      //  2 required non-max IVs
         };
         return TABLE[required_non_max_ivs][required_max_ivs];
-    }case 5:
-        if (required_max_ivs == 6){
-            return 32;
-        }
-        if (required_non_max_ivs == 1){
-            return 196;
-        }else{
-            return 6;
-        }
-    default:
+    }case 5:{
+        const double TABLE[][7] = {
+            {1, 192/161., 96/65., 64/33., 48/17., 192/37., 32},     //  0 required non-max IVs
+            {196, 196, 196, 196, 196, 196, 0},                      //  1 required non-max IVs
+        };
+        return TABLE[required_non_max_ivs][required_max_ivs];
+    }default:
         throw "Max IVs must be 1 - 5.";
     }
 }
@@ -135,19 +129,20 @@ void print_odds(const Pokemon& pokemon, const Filter& filter){
 
     switch (filter.ability){
     case -1:
-        cout << "Odds: 1 in " << (odds == 0 ? "Unable to compute." : tostr_commas((uint64_t)odds)) << endl;
+        cout << "Odds: 1 in " << tostr_commas((uint64_t)odds) << endl;
         break;
     case 2:
         odds *= 3;
-        cout << "Odds: 1 in " << (odds == 0 ? "Unable to compute." : tostr_commas((uint64_t)odds)) << endl;
+        cout << "Odds: 1 in " << tostr_commas((uint64_t)odds) << endl;
         break;
     case 0:
+    case 1:
         double odds2 = odds;
         if (pokemon.ability == Ability::HIDDEN){
             odds2 *= 2;
         }
-        cout << "Odds (1 non-HA ability):   1 in " << (odds == 0 ? "Unable to compute." : tostr_commas((uint64_t)odds)) << endl;
-        cout << "Odds (2 non-HA abilities): 1 in " << (odds == 0 ? "Unable to compute." : tostr_commas((uint64_t)odds2)) << endl;
+        cout << "Odds (1 non-HA ability):   1 in " << tostr_commas((uint64_t)odds) << endl;
+        cout << "Odds (2 non-HA abilities): 1 in " << tostr_commas((uint64_t)odds2) << endl;
         break;
     }
 }
