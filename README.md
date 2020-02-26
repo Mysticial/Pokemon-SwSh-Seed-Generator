@@ -24,7 +24,7 @@ Build Options:
 If your processor supports AVX2 and/or AVX512, you should choose those instead. The program is much faster with either AVX2 or AVX512.
 
 On a slightly overclocked 10-core Skylake processor:
- - `x64 Release`: 15 minutes
+ - `x64 Release`: 10 minutes
  - `x64 AVX2`: 90 seconds
  - `x64 AVX512`: 60 seconds
 
