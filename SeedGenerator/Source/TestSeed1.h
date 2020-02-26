@@ -1,90 +1,12 @@
 
+#pragma once
+#ifndef SeedGenerator_TestSeed1_H
+#define SeedGenerator_TestSeed1_H
+
+#include <string>
 #include <mutex>
-#include <iostream>
 #include "XoroShiro.h"
-using namespace std;
-
-enum class Shiny{
-    NONE,
-    STAR,
-    SQUARE,
-    UNSPECIFIED,
-};
-const char* SHINY[] = {
-    "No    ",
-    "Star  ",
-    "Square",
-};
-
-enum class Ability{
-    HIDDEN,
-    NO_HIDDEN,
-    LOCKED,
-};
-
-enum class Nature{
-    Hardy,
-    Lonely,
-    Brave,
-    Adamant,
-    Naughty,
-    Bold,
-    Docile,
-    Relaxed,
-    Impish,
-    Lax,
-    Timid,
-    Hasty,
-    Serious,
-    Jolly,
-    Naive,
-    Modest,
-    Mild,
-    Quiet,
-    Bashful,
-    Rash,
-    Calm,
-    Gentle,
-    Sassy,
-    Careful,
-    Quirky,
-    UNSPECIFIED,
-};
-const char* NATURES[] = {
-    "Hardy",
-    "Lonely",
-    "Brave",
-    "Adamant",
-    "Naughty",
-    "Bold",
-    "Docile",
-    "Relaxed",
-    "Impish",
-    "Lax",
-    "Timid",
-    "Hasty",
-    "Serious",
-    "Jolly",
-    "Naive",
-    "Modest",
-    "Mild",
-    "Quiet",
-    "Bashful",
-    "Rash",
-    "Calm",
-    "Gentle",
-    "Sassy",
-    "Careful",
-    "Quirky",
-};
-
-
-struct Pokemon{
-    Ability ability;
-    int max_ivs;
-    bool gendered;
-};
-
+#include "Types.h"
 
 
 static inline u16 getSv(u32 val)
@@ -103,41 +25,38 @@ static inline u8 getShinyType(u32 sidtid, u32 pid)
     return 1; // Star shiny
 }
 
-struct Filter{
-    Shiny shiny = Shiny::UNSPECIFIED;
-    int IVs[6] = {-1, -1, -1, -1, -1, -1};
-    int ability = -1;
-    Nature nature = Nature::UNSPECIFIED;
-};
 
 std::mutex print;
 
 void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips){
-    int shiny = 0;
-    int IVs[6] = {-1, -1, -1, -1, -1, -1};
-    int ability = -1;
-    int gender = -1;
-    int nature;
 
     seed += skips * 0x82A2B175229D6A5B;
 
     XoroShiro rng(seed);
 
-    u32 ec = rng.nextInt(0xffffffff, 0xffffffff);
+    u32 ec = rng.nextInt(0xffffffff);
 
-    u32 sidtid = rng.nextInt(0xffffffff, 0xffffffff);
-    u32 pid = rng.nextInt(0xffffffff, 0xffffffff);
+    u32 sidtid = rng.nextInt(0xffffffff);
+    u32 pid = rng.nextInt(0xffffffff);
+
+//    cout << pid << endl;
 
     u16 ftsv = getSv(sidtid);
     u16 psv = getSv(pid);
 
+    int shiny = 0;
     if (ftsv == psv){
         shiny = getShinyType(sidtid, pid);
 //        cout << "Shiny = " << shiny << endl;
     }
-    if (filter.shiny != Shiny::UNSPECIFIED && (Shiny)shiny != filter.shiny){
+    if (!(ShinyFilter(1 << shiny) & filter.shiny)){
         return;
     }
+
+    int IVs[6] = {-1, -1, -1, -1, -1, -1};
+    int ability = -1;
+    int gender_id = -1;
+    int nature;
 
     for (u8 i = 0; i < pokemon.max_ivs;){
         u8 index = static_cast<u8>(rng.nextInt(6, 7));
@@ -177,10 +96,28 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
     }
 //    cout << "Ability = " << ability << endl;
 
-    if (pokemon.gendered){
-        gender = static_cast<u8>(rng.nextInt(253, 255) + 1);
-    }
 //    cout << "Gender = " << gender << endl;
+    Gender gender;
+    switch (pokemon.gender){
+    case GenderRatio::GENDERLESS:
+        gender = Gender::UNSPECIFIED;
+        break;
+    case GenderRatio::FEMALE:
+        gender = Gender::FEMALE;
+        break;
+    case GenderRatio::MALE:
+        gender = Gender::MALE;
+        break;
+    default:
+        gender_id = static_cast<u8>(rng.nextInt(253, 255) + 1);
+        gender = gender_id < (int)pokemon.gender
+                    ? Gender::FEMALE
+                    : Gender::MALE;
+    }
+
+    if (filter.gender != Gender::UNSPECIFIED && gender != filter.gender){
+        return;
+    }
 
     nature = static_cast<u8>(rng.nextInt(25, 31));
     if (filter.nature != Nature::UNSPECIFIED && (Nature)nature != filter.nature){
@@ -190,8 +127,8 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
 
     std::lock_guard<std::mutex> lg(print);
     cout << std::hex << seed << std::dec
-         << " : Skips = " << skips
-         << " - " << SHINY[shiny]
+         << " : Skips = " << tostr_commas(skips)
+         << " - " << SHINY_TYPE[shiny]
          << " {" << IVs[0]
          << ", " << IVs[1]
          << ", " << IVs[2]
@@ -211,5 +148,19 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
         cout << "Ability H";
         break;
     }
-    cout << ", Gender #" << gender << endl;
+
+    const char* gender_string;
+    switch (gender){
+    case Gender::FEMALE:
+        gender_string = " (female)";
+        break;
+    case Gender::MALE:
+        gender_string = " (male)";
+        break;
+    default:
+        gender_string = " (genderless)";
+    }
+    cout << ", Gender #" << gender_id << gender_string << endl;
 }
+
+#endif

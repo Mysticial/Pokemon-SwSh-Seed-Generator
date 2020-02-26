@@ -15,18 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Global.h">
+    <ClInclude Include="..\Source\TestSeed1.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\XoroShiro.h">
+    <ClInclude Include="..\Source\TestSeed4_AVX2.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\TestSeed8_AVX512.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Tools.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Types.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\XoroShiro.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Global.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\OddsCalculator.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Main.cpp">
+    <ClCompile Include="..\Source\XoroShiro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\XoroShiro.cpp">
+    <ClCompile Include="..\Source\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
