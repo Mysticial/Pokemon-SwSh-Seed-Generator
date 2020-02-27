@@ -135,7 +135,7 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
          << ", " << IVs[3]
          << ", " << IVs[4]
          << ", " << IVs[5]
-         << "}  " << NATURES[nature]
+         << "} " << NATURES[nature]
          << ", ";
     switch (ability){
     case 0:

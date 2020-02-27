@@ -49,7 +49,6 @@ void test_seed8(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skip
 
     __m512i sv = _mm512_xor_si512(sidtid, pid);
     sv = _mm512_xor_si512(sv, _mm512_srli_epi64(sv, 16));
-
     sv = _mm512_and_si512(sv, _mm512_set1_epi64(0x000000000000fff0));
 
     if (!_mm512_cmpeq_epi64_mask(sv, _mm512_setzero_si512())){

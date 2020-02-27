@@ -39,6 +39,9 @@
     <ClInclude Include="..\Source\OddsCalculator.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\ParallelSearch.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\XoroShiro.cpp">

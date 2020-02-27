@@ -158,8 +158,8 @@ struct Pokemon{
     int max_ivs = 4;
     GenderRatio gender = GenderRatio::EVEN;
 
-    void print(){
-        cout << "Pokemon Stats:" << endl;
+    void print() const{
+        cout << "Pokemon Spec:" << endl;
         switch (ability){
         case Ability::HIDDEN: cout << "    Ability:    hidden possible" << endl;
             break;
@@ -210,8 +210,8 @@ struct Filter{
     Nature nature       = Nature::UNSPECIFIED;
     Gender gender       = Gender::UNSPECIFIED;
 
-    void print(){
-        cout << "Filters:" << endl;
+    void print() const{
+        cout << "Desired Stats:" << endl;
         cout << "    Shiny:      " << shiny.to_string() << endl;
 
         cout << "    IVs:        {";
@@ -244,7 +244,9 @@ struct Filter{
         }
         cout << endl;
 
-        cout << "    Nature:     " << NATURES[(int)nature] << endl;
+        if (nature != Nature::UNSPECIFIED){
+            cout << "    Nature:     " << NATURES[(int)nature] << endl;
+        }
 
         cout << "    Gender:     ";
         switch (gender){

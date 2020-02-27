@@ -37,6 +37,7 @@
   <ItemGroup>
     <ClInclude Include="..\Source\Global.h" />
     <ClInclude Include="..\Source\OddsCalculator.h" />
+    <ClInclude Include="..\Source\ParallelSearch.h" />
     <ClInclude Include="..\Source\TestSeed1.h" />
     <ClInclude Include="..\Source\TestSeed4_AVX2.h" />
     <ClInclude Include="..\Source\TestSeed8_AVX512.h" />
