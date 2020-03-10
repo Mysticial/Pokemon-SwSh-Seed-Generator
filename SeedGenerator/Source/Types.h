@@ -205,8 +205,9 @@ struct Pokemon{
 
 struct Filter{
     ShinyFilter shiny   = ShinyFilter::STAR | ShinyFilter::SQUARE;
-    int IVs[6]          = {-1, -1, -1, -1, -1, -1};
-    int ability         = -1;
+    char IVs[6]         = {-1, -1, -1, -1, -1, -1};
+    char characteristic = -1;
+    char ability        = -1;
     Nature nature       = Nature::UNSPECIFIED;
     Gender gender       = Gender::UNSPECIFIED;
 
@@ -222,7 +223,10 @@ struct Filter{
             if (IVs[c] < 0){
                 cout << "x";
             }else{
-                cout << IVs[c];
+                cout << (int)IVs[c];
+            }
+            if (c == characteristic){
+                cout << "*";
             }
         }
         cout << "}" << endl;

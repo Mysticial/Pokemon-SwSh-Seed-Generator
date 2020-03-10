@@ -151,34 +151,70 @@ const std::vector<std::array<char, 6>> MASKS[7] = {
     },
 };
 
-double odds_mask(const std::array<char, 6>& mask, const int ivs[6]){
+double binomial_probability(size_t n, size_t k, double p){
+    double num = 1;
+    double den = 1;
+    for (size_t c = 0; c < k; c++){
+        num *= n - c;
+        den *= c + 1;
+    }
+    num *= std::pow(p, k);
+    num *= std::pow(1 - p, n - k);
+    return num / den;
+}
+double odds_mask(const std::array<char, 6>& mask, const char ivs[6], char characteristic){
     //  Return the probability of the mask satisfying the desired IV spread.
-    double odds = 1;
+    int max_IVs = 0;
+    int flex_IVs = 0;
+
+    double odds_IVs = 1;
     for (size_t c = 0; c < 6; c++){
-        int desired = ivs[c];
+        char desired = ivs[c];
+        if (c == characteristic){
+            if (0 <= desired && desired < 31){
+                return 0;
+            }
+            desired = 31;
+        }
         if (mask[c]){
             //  Forced to 31
             if (0 <= desired && desired < 31){
                 return 0;
             }
+            max_IVs++;
         }else{
             //  Randomized
-            if (0 <= desired){
-                odds *= 1 / 32.;
+            if (desired == 31){
+                odds_IVs *= 1 / 32.;
+                max_IVs++;
+            }else if (0 <= desired){
+                odds_IVs *= 1 / 32.;
+            }else{
+                flex_IVs++;
             }
         }
     }
-    return odds;
+
+    if (characteristic < 0){
+        return odds_IVs;
+    }
+
+    double odds_characteristic = 0;
+    for (int c = 0; c <= flex_IVs; c++){
+        odds_characteristic += binomial_probability(flex_IVs, c, 1/32.) / (max_IVs + c);
+    }
+
+    return odds_IVs * odds_characteristic;
 }
-double odds_set(const std::vector<std::array<char, 6>>& masks, const int ivs[6]){
+double odds_set(const std::vector<std::array<char, 6>>& masks, const char ivs[6], char characteristic){
     //  Return the probability of the max IV set satisfying the desired IV spread.
     double odds = 0;
     for (const std::array<char, 6>& mask : masks){
-        odds += odds_mask(mask, ivs);
+        odds += odds_mask(mask, ivs, characteristic);
     }
     return odds / masks.size();
 }
-double odds_ivs(int max_ivs, const int filter_ivs[6]){
+double odds_ivs(int max_ivs, const char filter_ivs[6], char characteristic){
     //  This one is ugly to calculate.
 
     //  For a given # of max IVs, brute force all the different
@@ -189,13 +225,17 @@ double odds_ivs(int max_ivs, const int filter_ivs[6]){
         throw "Max IVs must be 0 - 6.";
     }
 
-    double odds = odds_set(MASKS[max_ivs], filter_ivs);
+    double odds = odds_set(MASKS[max_ivs], filter_ivs, characteristic);
     if (odds == 0){
-        throw "Impossible to satisfy the desired IV spread.";
+        throw "Impossible to satisfy the desired IV spread and/or characteristic.";
     }
 
     odds = 1 / odds;
-    cout << "    IV Spread:     1 in " << tostr_commas((uint64_t)odds) << endl;
+    if (characteristic < 0){
+        cout << "    IV Spread:     1 in " << tostr_commas((uint64_t)odds) << endl;
+    }else{
+        cout << "    IV Spread:     1 in " << tostr_commas((uint64_t)odds) << "  (including characteristic)" << endl;
+    }
 
     return odds;
 }
@@ -210,7 +250,7 @@ void print_odds(const Pokemon& pokemon, const Filter& filter){
     odds *= odds_shiny(filter.shiny);
 
     //  IVs
-    odds *= odds_ivs(pokemon.max_ivs, filter.IVs);
+    odds *= odds_ivs(pokemon.max_ivs, filter.IVs, filter.characteristic);
 
     //  Nature
     if (filter.nature != Nature::UNSPECIFIED){
@@ -228,7 +268,7 @@ void print_odds(const Pokemon& pokemon, const Filter& filter){
 
     //  Ability
     if (filter.ability == -1){
-        cout << "  Total:         1 in " << tostr_commas((uint64_t)odds) << endl;
+        cout << "    Total:         1 in " << tostr_commas((uint64_t)odds) << endl;
         return;
     }
 
@@ -236,28 +276,13 @@ void print_odds(const Pokemon& pokemon, const Filter& filter){
     case Ability::HIDDEN:
         odds *= 3;
         cout << "    Ability:       1 in 3" << endl;
-        //if (filter.ability == 2){
-        //    cout << "    Ability:       1 in 3" << endl;
-        //    cout << "    Total Odds:    1 in " << tostr_commas((uint64_t)odds) << endl;
-        //}else{
-        //    cout << "    Ability:       (1 in 3) or (2 in 3)" << endl;
-        //    cout << "    Total (1 non-HA ability):   1 in " << tostr_commas((uint64_t)(odds * 0.5)) << endl;
-        //    cout << "    Total (2 non-HA abilities): 1 in " << tostr_commas((uint64_t)odds) << endl;
-        //}
         break;
     case Ability::NO_HIDDEN:
+        if (filter.ability == 2){
+            throw "No hits possible. This pokemon does not have hidden ability.";
+        }
         odds *= 2;
         cout << "    Ability:       1 in 2" << endl;
-        //if (filter.ability == 2){
-        //    cout << "    Ability:       1 in 3" << endl;
-        //    cout << "    Total:         1 in " << tostr_commas((uint64_t)odds) << endl;
-        //    return;
-        //}else{
-        //    cout << "    Ability:       (1 in 3) or (2 in 3)" << endl;
-        //    cout << "    Total (1 non-HA ability):   1 in " << tostr_commas((uint64_t)(odds * 0.5)) << endl;
-        //    cout << "    Total (2 non-HA abilities): 1 in " << tostr_commas((uint64_t)odds) << endl;
-        //    return;
-        //}
         break;
     case Ability::LOCKED:
         cout << "    Ability:       ignored" << endl;

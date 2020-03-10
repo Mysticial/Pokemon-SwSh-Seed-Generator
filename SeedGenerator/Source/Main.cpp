@@ -39,16 +39,25 @@ int main(){
     //      -1      Don't filter.
     //      x       Show only this specific value.
     //
-    //  Parameter 3: Ability
+    //  Parameter 3: Characteristic
+    //      -1      Don't filter.
+    //      0       Takes plenty of siestas
+    //      1       Likes to thrash about
+    //      2       Capable of taking hits
+    //      3       Mischievous
+    //      4       Somewhat vain
+    //      5       Alert to sounds
+    //
+    //  Parameter 4: Ability
     //      -1      Don't filter
     //      0       Ability 1
     //      1       Ability 2
     //      2       Hidden Ability
     //
-    //  Parameter 4: Nature
+    //  Parameter 5: Nature
     //      UNSPECIFIED means don't filter.
     //
-    //  Parameter 5: Gender
+    //  Parameter 6: Gender
     //      MALE
     //      FEMALE
     //      UNSPECIFIED means don't filter.
@@ -56,13 +65,14 @@ int main(){
     Filter filter{
         ShinyFilter::SQUARE,
         {31, 0, 31, 31, 31, 0},
+        3,
         2,
         Nature::Quiet,
         Gender::FEMALE,
     };
 
     //  Starting seed.
-    u64 seed = 0x62533d674d4772d2;
+    u64 seed = 0x4399E7E35F921E09;
 
     //  Frames to search.
     u64 frames = 1'000'000'000'000;

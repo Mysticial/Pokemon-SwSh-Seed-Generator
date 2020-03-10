@@ -21,6 +21,7 @@ void search(const Pokemon& pokemon, const Filter& filter, uint64_t seed, uint64_
     try{
         print_odds(pokemon, filter);
     }catch (const char* str){
+        cout << endl;
         cout << str << endl;
         cout << "Canceling Search..." << endl;
         cout << endl;

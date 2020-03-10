@@ -25,6 +25,21 @@ static inline u8 getShinyType(u32 sidtid, u32 pid)
     return 1; // Star shiny
 }
 
+static inline char getCharacteristic(u32 ec, const char ivs[6]){
+    const u8 statOrder[6] = { 0, 1, 2, 5, 3, 4 };
+
+    u8 charStat = ec % 6;
+    for (u8 i = 0; i < 6; i++)
+    {
+        u8 stat = statOrder[(charStat + i) % 6];
+        if (ivs[stat] == 31)
+        {
+            return stat;
+        }
+    }
+    return statOrder[charStat];
+}
+
 
 std::mutex print;
 
@@ -53,11 +68,13 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
         return;
     }
 
-    int IVs[6] = {-1, -1, -1, -1, -1, -1};
+    char IVs[6] = {-1, -1, -1, -1, -1, -1};
+    char characteristic = -1;
     int ability = -1;
     int gender_id = -1;
     int nature;
 
+    //  Forced max IVs.
     for (u8 i = 0; i < pokemon.max_ivs;){
         u8 index = static_cast<u8>(rng.nextInt(6, 7));
         if (IVs[index] == -1)
@@ -69,8 +86,7 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
 
     // Fill rest of IVs with rand calls
     for (u8 i = 0; i < 6; i++){
-        if (IVs[i] == -1)
-        {
+        if (IVs[i] == -1){
             IVs[i] = static_cast<u8>(rng.nextInt(31));
         }
 //        cout << "IV = " << IVs[i] << endl;
@@ -80,6 +96,13 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
         }
     }
 
+    //  Characteristic
+    characteristic = getCharacteristic(ec, IVs);
+    if (filter.characteristic != -1 && filter.characteristic != characteristic){
+        return;
+    }
+
+    //  Ability
     switch (pokemon.ability){
     case Ability::HIDDEN:
         ability = static_cast<u8>(rng.nextInt(3, 3));
@@ -129,12 +152,12 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
     cout << std::hex << seed << std::dec
          << " : Skips = " << tostr_commas(skips)
          << " - " << SHINY_TYPE[shiny]
-         << " {" << IVs[0]
-         << ", " << IVs[1]
-         << ", " << IVs[2]
-         << ", " << IVs[3]
-         << ", " << IVs[4]
-         << ", " << IVs[5]
+         << " {" << (int)IVs[0] << (characteristic == 0 ? "*" : "")
+         << ", " << (int)IVs[1] << (characteristic == 1 ? "*" : "")
+         << ", " << (int)IVs[2] << (characteristic == 2 ? "*" : "")
+         << ", " << (int)IVs[3] << (characteristic == 3 ? "*" : "")
+         << ", " << (int)IVs[4] << (characteristic == 4 ? "*" : "")
+         << ", " << (int)IVs[5] << (characteristic == 5 ? "*" : "")
          << "} " << NATURES[nature]
          << ", ";
     switch (ability){
