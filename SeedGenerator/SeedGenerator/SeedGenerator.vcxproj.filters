@@ -13,42 +13,183 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Fields">
+      <UniqueIdentifier>{263a8766-e2de-4d4a-bb5e-796d809e50eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DistantSearch">
+      <UniqueIdentifier>{e55c7f6e-050e-430c-af33-3862d1be4798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{1ab9846f-3f36-4e06-a824-09471e125e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CalculateSeed">
+      <UniqueIdentifier>{6903dbb2-bafd-491a-b9ac-3264c47659ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\TestSeed1.h">
+    <ClInclude Include="..\Source\PokemonSpec.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\TestSeed4_AVX2.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Fields\Gender.h">
+      <Filter>Source Files\Fields</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\TestSeed8_AVX512.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Fields\Nature.h">
+      <Filter>Source Files\Fields</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Tools.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Fields\IvFilter.h">
+      <Filter>Source Files\Fields</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Types.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\DistantSearch\OddsCalculator.h">
+      <Filter>Source Files\DistantSearch</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\XoroShiro.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Fields\Types.h">
+      <Filter>Source Files\Fields</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Global.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Tools\Tools.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\OddsCalculator.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Tools\XoroShiro.h">
+      <Filter>Source Files\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\ParallelSearch.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\Source\Tools\Global.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\SearchParameters.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\TestSeed.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\TestShiny4_AVX2.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\TestShiny8_AVX512.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Fields\ShinyFilter.h">
+      <Filter>Source Files\Fields</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\DistantSearchSession.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\DistantSearch.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\TestShiny2_SSE41.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\ParallelSearch %28disabled%29.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\CalculateSeedParameters.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\CalculateSeed.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Tools\XoroShiro2_SSE2.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Tools\XoroShiro4_AVX2.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Tools\XoroShiro8_AVX512.h">
+      <Filter>Source Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\ScanSeed8_AVX512.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\ScanSeed4_AVX2.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\ScanSeed2_SSE41.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CalculateSeed\ScanSeed_Default.h">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\SearchFilter.h">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DistantSearch\SeedPrinter.h">
+      <Filter>Source Files\DistantSearch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\XoroShiro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\PokemonSpec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Fields\Gender.cpp">
+      <Filter>Source Files\Fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Fields\Nature.cpp">
+      <Filter>Source Files\Fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Fields\IvFilter.cpp">
+      <Filter>Source Files\Fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Fields\Types.cpp">
+      <Filter>Source Files\Fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\OddsCalculator.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Tools\Tools.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Tools\XoroShiro.cpp">
+      <Filter>Source Files\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\SearchParameters.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\TestSeed.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\TestShiny4_AVX2.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\TestShiny8_AVX512.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Fields\ShinyFilter.cpp">
+      <Filter>Source Files\Fields</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\DistantSearchSession.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\DistantSearch.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\TestShiny2_SSE41.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\CalculateSeedParameters.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\CalculateSeed.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\ScanSeed8_AVX512.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\ScanSeed4_AVX2.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\ScanSeed2_SSE41.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\CalculateSeed\ScanSeed_Default.cpp">
+      <Filter>Source Files\CalculateSeed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\SeedPrinter.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DistantSearch\SearchFilter.cpp">
+      <Filter>Source Files\DistantSearch</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

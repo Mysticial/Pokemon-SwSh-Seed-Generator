@@ -1,49 +1,18 @@
 
-#pragma once
-#ifndef SeedGenerator_TestSeed1_H
-#define SeedGenerator_TestSeed1_H
-
-#include <string>
-#include <mutex>
-#include "XoroShiro.h"
-#include "Types.h"
+#include <sstream>
+#include "Tools/Tools.h"
+#include "Tools/XoroShiro.h"
+#include "TestSeed.h"
+namespace SeedGenerator{
+namespace DistantSearch{
 
 
-static inline u16 getSv(u32 val)
-{
-    return ((val >> 16) ^ (val & 0xFFFF)) >> 4;
-}
-
-static inline u8 getShinyType(u32 sidtid, u32 pid)
-{
-    u16 val = (sidtid ^ pid) >> 16;
-    if ((val ^ (sidtid & 0xffff)) == (pid & 0xffff))
-    {
-        return 2; // Square shiny
-    }
-
-    return 1; // Star shiny
-}
-
-static inline char getCharacteristic(u32 ec, const char ivs[6]){
-    const u8 statOrder[6] = { 0, 1, 2, 5, 3, 4 };
-
-    u8 charStat = ec % 6;
-    for (u8 i = 0; i < 6; i++)
-    {
-        u8 stat = statOrder[(charStat + i) % 6];
-        if (ivs[stat] == 31)
-        {
-            return stat;
-        }
-    }
-    return statOrder[charStat];
-}
-
-
-std::mutex print;
-
-void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips){
+void test_seed(
+    SeedReporter& reporter,
+    const PokemonSpec& pokemon,
+    const SearchFilter& filter,
+    uint64_t seed, uint64_t skips
+){
 
     seed += skips * 0x82A2B175229D6A5B;
 
@@ -75,7 +44,7 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
     int nature;
 
     //  Forced max IVs.
-    for (u8 i = 0; i < pokemon.max_ivs;){
+    for (u8 i = 0; i < pokemon.max_ivs();){
         u8 index = static_cast<u8>(rng.nextInt(6, 7));
         if (IVs[index] == -1)
         {
@@ -98,12 +67,12 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
 
     //  Characteristic
     characteristic = getCharacteristic(ec, IVs);
-    if (filter.characteristic != -1 && filter.characteristic != characteristic){
+    if (filter.IVs.characteristic() != -1 && filter.IVs.characteristic() != characteristic){
         return;
     }
 
     //  Ability
-    switch (pokemon.ability){
+    switch (pokemon.ability()){
     case Ability::HIDDEN:
         ability = static_cast<u8>(rng.nextInt(3, 3));
         break;
@@ -120,25 +89,25 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
 //    cout << "Ability = " << ability << endl;
 
 //    cout << "Gender = " << gender << endl;
-    Gender gender;
-    switch (pokemon.gender){
+    GenderFilter gender;
+    switch (pokemon.gender()){
     case GenderRatio::GENDERLESS:
-        gender = Gender::UNSPECIFIED;
+        gender = GenderFilter::UNSPECIFIED;
         break;
     case GenderRatio::FEMALE:
-        gender = Gender::FEMALE;
+        gender = GenderFilter::FEMALE;
         break;
     case GenderRatio::MALE:
-        gender = Gender::MALE;
+        gender = GenderFilter::MALE;
         break;
     default:
         gender_id = static_cast<u8>(rng.nextInt(253, 255) + 1);
-        gender = gender_id < (int)pokemon.gender
-                    ? Gender::FEMALE
-                    : Gender::MALE;
+        gender = gender_id < (int)pokemon.gender()
+                    ? GenderFilter::FEMALE
+                    : GenderFilter::MALE;
     }
 
-    if (filter.gender != Gender::UNSPECIFIED && gender != filter.gender){
+    if (filter.gender != GenderFilter::UNSPECIFIED && gender != filter.gender){
         return;
     }
 
@@ -148,6 +117,7 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
     }
 //    cout << "Nature = " << NATURES[nature] << endl;
 
+#if 0
     std::lock_guard<std::mutex> lg(print);
     cout << std::hex << seed << std::dec
          << " : Skips = " << tostr_commas(skips)
@@ -158,7 +128,7 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
          << ", " << (int)IVs[3] << (characteristic == 3 ? "*" : "")
          << ", " << (int)IVs[4] << (characteristic == 4 ? "*" : "")
          << ", " << (int)IVs[5] << (characteristic == 5 ? "*" : "")
-         << "} " << NATURES[nature]
+         << "} " << to_string((Nature)nature)
          << ", ";
     switch (ability){
     case 0:
@@ -174,16 +144,34 @@ void test_seed(const Pokemon& pokemon, const Filter& filter, u64 seed, u64 skips
 
     const char* gender_string;
     switch (gender){
-    case Gender::FEMALE:
+    case GenderFilter::FEMALE:
         gender_string = " (female)";
         break;
-    case Gender::MALE:
+    case GenderFilter::MALE:
         gender_string = " (male)";
         break;
     default:
         gender_string = " (genderless)";
     }
     cout << ", Gender #" << gender_id << gender_string << endl;
+#endif
+    reporter.report(seed, skips);
 }
 
-#endif
+
+void test_seed_Default(
+    SeedReporter& reporter,
+    const PokemonSpec& pokemon,
+    const SearchFilter& filter,
+    uint64_t seed, uint64_t skips,
+    uint64_t iterations
+){
+    for (uint64_t c = 0; c < iterations; c++){
+        test_seed(reporter, pokemon, filter, seed, skips + c);
+    }
+}
+
+
+
+}
+}

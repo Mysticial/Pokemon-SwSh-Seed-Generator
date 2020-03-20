@@ -1,0 +1,4 @@
+CalculateSeed:
+    EC:         a82735a3
+    PID:        d606b081
+    IVs:        31 23 31 31* 6 1    //  x = unknown, 31* picks that IV for characteristic

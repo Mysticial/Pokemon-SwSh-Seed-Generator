@@ -1,85 +1,66 @@
 
-#include "ParallelSearch.h"
+#include <vector>
+#include <map>
+#include <fstream>
+#include <iostream>
+#include "Tools/Tools.h"
+#include "Tools/XoroShiro.h"
+//#include "DistantSearch/ParallelSearch.h"
+#include "PokemonSpec.h"
+#include "CalculateSeed/CalculateSeed.h"
+#include "DistantSearch/SearchFilter.h"
+#include "DistantSearch/TestSeed.h"
+#include "DistantSearch/DistantSearch.h"
+using std::cout;
+using std::endl;
+
+
+using namespace SeedGenerator::SeedCalculator;
+using namespace SeedGenerator::DistantSearch;
 
 
 
 int main(){
 
-    //  Parameter 1: Abilities
-    //      HIDDEN      hidden ability possible
-    //      NO_HIDDEN   hidden ability not possible
-    //      LOCKED      ability locked (not tested)
-    //
-    //  Parameter 2: # of max IVs
-    //
-    //  Parameter 3: Gender
-    //      MALE        100% male
-    //      MALE_88     88% male
-    //      MALE_75     75% male
-    //      EVEN        50%
-    //      FEMALE_75   75% female
-    //      FEMALE_88   88% female
-    //      FEMALE     100% female
-    //      GENDERLESS
-    Pokemon pokemon{
-        Ability::HIDDEN,
-        4,
-        GenderRatio::FEMALE,
-    };
+    try{
+        cout << "SeedGenerator 1.1 - by Mysticial" << endl;
+        cout << endl;
 
-    //  Parameter 1: Shininess
-    //      NONE        not shiny
-    //      STAR        star shinies
-    //      SQUARE      square shinies
-    //      SHINY       star or square shinies
-    //      ALL         include everything
-    //  You can combine multiple flags to include in the filter.
-    //
-    //  Parameter 2: IVs
-    //      -1      Don't filter.
-    //      x       Show only this specific value.
-    //
-    //  Parameter 3: Characteristic
-    //      -1      Don't filter.
-    //      0       Takes plenty of siestas
-    //      1       Likes to thrash about
-    //      2       Capable of taking hits
-    //      3       Mischievous
-    //      4       Somewhat vain
-    //      5       Alert to sounds
-    //
-    //  Parameter 4: Ability
-    //      -1      Don't filter
-    //      0       Ability 1
-    //      1       Ability 2
-    //      2       Hidden Ability
-    //
-    //  Parameter 5: Nature
-    //      UNSPECIFIED means don't filter.
-    //
-    //  Parameter 6: Gender
-    //      MALE
-    //      FEMALE
-    //      UNSPECIFIED means don't filter.
+        cout << "Choose an Option:" << endl;
+        cout << "    0    Calculate Seed: Calculate Seed for a given den Pokemon." << endl;
+        cout << "    1    Distant Search: Search billions of frames for a perfect den seed." << endl;
+        cout << endl;
 
-    Filter filter{
-        ShinyFilter::SQUARE,
-        {31, 0, 31, 31, 31, 0},
-        3,
-        2,
-        Nature::Quiet,
-        Gender::FEMALE,
-    };
+        int choice = -1;
 
-    //  Starting seed.
-    u64 seed = 0x4399E7E35F921E09;
+        while (choice < 0 || choice > 1){
+            cout << "option: ";
+            std::cin >> choice;
+        }
 
-    //  Frames to search.
-    u64 frames = 1'000'000'000'000;
+        cout << endl << endl;
 
+        switch (choice){
+        case 0:{
+            const char* filename = "CalculateSeed.txt";
+            cout << "Loading File: " << filename << endl << endl;
+            std::ifstream file(filename);
+            calculate_seed(file);
+            break;
+        }case 1:{
+            const char* filename = "DistantSearch.txt";
+            cout << "Loading File: " << filename << endl << endl;
+            std::ifstream file(filename);
+            distant_search(file);
+            break;
+        }}
 
-    //  Perform search.
-    search(pokemon, filter, seed, frames);
+    }catch (std::string& err){
+        cout << err << endl << endl;
+    }catch (const char* err){
+        cout << err << endl << endl;
+    }
+
 
 #ifdef _WIN32
     system("pause");

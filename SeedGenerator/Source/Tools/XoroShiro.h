@@ -21,6 +21,7 @@
 #define XOROSHIRO_HPP
 
 #include "Global.h"
+namespace SeedGenerator{
 
 class XoroShiro
 {
@@ -38,4 +39,35 @@ private:
     u64 next();
 };
 
+
+static inline u16 getSv(u32 val){
+    return ((val >> 16) ^ (val & 0xFFFF)) >> 4;
+}
+static inline u8 getShinyType(u32 sidtid, u32 pid){
+    u16 val = (sidtid ^ pid) >> 16;
+    if ((val ^ (sidtid & 0xffff)) == (pid & 0xffff))
+    {
+        return 2; // Square shiny
+    }
+
+    return 1; // Star shiny
+}
+static inline char getCharacteristic(u32 ec, const char ivs[6]){
+    const u8 statOrder[6] = { 0, 1, 2, 5, 3, 4 };
+
+    u8 charStat = ec % 6;
+    for (u8 i = 0; i < 6; i++)
+    {
+        u8 stat = statOrder[(charStat + i) % 6];
+        if (ivs[stat] == 31)
+        {
+            return stat;
+        }
+    }
+    return statOrder[charStat];
+}
+
+
+
+}
 #endif // XOROSHIRO_HPP

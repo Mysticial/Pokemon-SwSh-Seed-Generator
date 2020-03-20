@@ -1,0 +1,22 @@
+PokemonSpec:
+    GuaranteedMaxIVs:        4          //  1, 2, 3, 4, 5, or 6
+    HiddenAbilityPossible:   yes        //  yes or no
+    GenderRatio:             FEMALE     //  MALE, MALE_88, MALE_75,
+                                        //  EVEN,
+                                        //  FEMALE_75, FEMALE_88, FEMALE,
+                                        //  GENDERLESS
+
+SearchFilter:
+    Shininess:  Square                  //  Unspecified, NotShiny, AnyShiny, Star, Square
+    IVs:        31 0 31 31* 31 0        //  x = don't care, 31* picks that IV for characteristic
+    Ability:    H                       //  Unspecified, 1, 2, or H
+    Nature:     Quiet                   //  Unspecified, Timid, Modest, etc...
+    Gender:     Female                  //  Unspecified, Male, or Female
+
+SearchParameters:
+    StartingSeed:  4399e7e35f921e09     //  Enter your wishing piece seed.
+    MaxResults:    10                   //  Stop search after this many results.
+    MaxFrames:     1,000,000,000,000    //  # of frames to search.
+
+
+

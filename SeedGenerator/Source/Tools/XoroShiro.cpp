@@ -18,6 +18,7 @@
  */
 
 #include "XoroShiro.h"
+namespace SeedGenerator{
 
 static inline u64 rotl(u64 x, u8 k)
 {
@@ -75,4 +76,7 @@ u64 XoroShiro::next()
     state[1] = rotl(s1, 37);
 
     return result;
+}
+
+
 }
