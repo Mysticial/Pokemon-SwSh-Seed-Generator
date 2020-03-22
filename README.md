@@ -6,9 +6,9 @@ SeedGen has two features:
 
 **Calculate Seed:**
 
-Given the PID, EC, and IVs for den Pokemon, calculate the seed(s) that could produce it. This is no different from all other seed calculates like those built into Dudu. The only difference is that this will work for shinies as well.
+Given the PID, EC, and IVs for den Pokemon, calculate the seed(s) that could produce it. This is similar to all other seed calculators like those built into Dudu. The only difference is that this will work for shinies as well.
 
-If no seed is found, it means that either the input is incorrect, or the Pokemon is illegal (and likely hacked). A lot of improperly genned den Pokemon will not have a seed associated with it. These are all illegal.
+If no seed is found, it means that either the input is incorrect, or the Pokemon is illegal (and likely hacked). A lot of improperly genned den Pokemon will not have a seed associated with it. They are all illegal.
 
 ```
 Calculate Seed for Den Pokemon:
@@ -115,24 +115,25 @@ Requirements:
 Build Options:
  - `x86 Release`
  - `x64 Release`
- - `x64 SSE4.1`
- - `x64 AVX2`
- - `x64 AVX512`
+ - `x64 07-SSE4.1`
+ - `x64 13-AVX2`
+ - `x64 17-AVX512`
 
 Because Distant Search is performance critical, multiple modes with different levels of ISA optimizations are provided.
- - `x64 AVX512`: For Skylake Server and Cannonlake or later.
- - `x64 AVX2`: For Haswell or AMD Zen or later.
- - `x64 SSE4.1`: For Nehalem and AMD Bulldozer or later.
+ - `x64 17-AVX512`: For Skylake Server and Cannonlake or later.
+ - `x64 13-AVX2`: For Haswell or AMD Zen or later.
+ - `x64 07-SSE4.1`: For Nehalem and AMD Bulldozer or later.
 
 The last two are mostly fallbacks. They aren't at all efficient.
 
 Searching 1 trillion frames on slightly overclocked 10-core Skylake processor takes:
  - `x64 Release`: 10 minutes
- - `x64 AVX2`: 90 seconds
- - `x64 AVX512`: 60 seconds
+ - `x64 13-AVX2`: 90 seconds
+ - `x64 17-AVX512`: 60 seconds
 
 -----
 
 **Credits:**
 
-Much of the code here has been forked from: https://github.com/Admiral-Fish/RaidFinder
+Some of the code here has been forked from: https://github.com/Admiral-Fish/RaidFinder
+As such, this project is also under GPLv3.
