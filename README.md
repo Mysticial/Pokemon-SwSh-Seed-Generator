@@ -1,5 +1,7 @@
 # SeedGen
 
+Discord Server: https://discord.gg/BSjDp27
+
 SeedGen has two features:
  1. Calculate Seed
  2. Distant Search
