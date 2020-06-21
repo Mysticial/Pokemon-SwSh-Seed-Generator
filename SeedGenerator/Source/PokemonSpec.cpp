@@ -11,7 +11,7 @@ namespace SeedGenerator{
 
 const std::map<std::string, void(*)(const char*&, PokemonSpec&)> POKEMON_SPEC_KEYS{
     {"GuaranteedMaxIVs:",       PokemonSpec::parse_max_ivs},
-    {"HiddenAbilityPossible:",  PokemonSpec::parse_ability},
+    {"Ability:",                PokemonSpec::parse_ability},
     {"GenderRatio:",            PokemonSpec::parse_gender},
 };
 
@@ -26,12 +26,16 @@ void PokemonSpec::parse_max_ivs(const char*& stream, PokemonSpec& self){
 void PokemonSpec::parse_ability(const char*& stream, PokemonSpec& self){
     skip_whitespace(stream);
     std::string token = parse_token(stream);
-    if (token == "yes"){
+    if (token == "HIDDEN_POSSIBLE"){
         self.m_ability = Ability::HIDDEN;
         return;
     }
-    if (token == "no"){
+    if (token == "HIDDEN_NOT_POSSIBLE"){
         self.m_ability = Ability::NO_HIDDEN;
+        return;
+    }
+    if (token == "LOCKED"){
+        self.m_ability = Ability::LOCKED;
         return;
     }
     throw "Invalid hidden ability specifier: " + token;

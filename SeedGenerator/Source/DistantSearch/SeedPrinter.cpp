@@ -90,12 +90,16 @@ std::string dump_seed(const PokemonSpec& pokemon, uint64_t seed, uint64_t skips)
 
     std::stringstream ss;
     ss << tostr_hex_padded(seed)
+       << " (3-day roll: " << tostr_hex_padded(seed - 3*0x82A2B175229D6A5B) << ")"
        << " : Skips = " << tostr_commas(skips)
        << " - " << SHINY_TYPE[shiny]
        << " " << dump_IVs(IVs, characteristic)
        << " " << to_string((Nature)nature)
        << ", ";
     switch (ability){
+    case -1:
+        ss << "Locked Ability";
+        break;
     case 0:
         ss << "Ability 1";
         break;

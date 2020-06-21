@@ -1,7 +1,7 @@
 PokemonSpec:
-    GuaranteedMaxIVs:        4          //  1, 2, 3, 4, 5, or 6
-    HiddenAbilityPossible:   yes        //  yes or no
-    GenderRatio:             FEMALE     //  MALE, MALE_88, MALE_75,
+    GuaranteedMaxIVs:   4               //  1, 2, 3, 4, 5, or 6
+    Ability:            HIDDEN_POSSIBLE //  HIDDEN_POSSIBLE, HIDDEN_NOT_POSSIBLE, LOCKED
+    GenderRatio:        FEMALE          //  MALE, MALE_88, MALE_75,
                                         //  EVEN,
                                         //  FEMALE_75, FEMALE_88, FEMALE,
                                         //  GENDERLESS
