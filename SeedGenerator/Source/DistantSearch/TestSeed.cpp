@@ -83,7 +83,7 @@ void test_seed(
         ability = -1;
         break;
     }
-    if (filter.ability != -1 && ability != filter.ability){
+    if (ability != -1 && filter.ability != -1 && ability != filter.ability){
         return;
     }
 //    cout << "Ability = " << ability << endl;
