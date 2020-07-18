@@ -33,7 +33,7 @@ void test_seed(
         shiny = getShinyType(sidtid, pid);
 //        cout << "Shiny = " << shiny << endl;
     }
-    if (!(ShinyFilter(1 << shiny) & filter.shiny)){
+    if (!(ShinySearchFilter(1 << shiny) & filter.shiny)){
         return;
     }
 

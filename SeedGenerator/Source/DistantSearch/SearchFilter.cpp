@@ -20,7 +20,7 @@ const std::map<std::string, void(*)(const char*&, SearchFilter&)> SEARCH_FILTER_
 void SearchFilter::parse_shininess(const char*& stream, SearchFilter& self){
     skip_whitespace(stream);
     std::string token = parse_token(stream);
-    self.shiny = ShinyFilter(token);
+    self.shiny = ShinySearchFilter(token);
 }
 void SearchFilter::parse_IVs(const char*& stream, SearchFilter& self){
     self.IVs = IvFilter(stream);

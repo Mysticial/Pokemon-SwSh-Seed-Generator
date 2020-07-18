@@ -5,14 +5,56 @@
 #include "ShinyFilter.h"
 namespace SeedGenerator{
 
-const ShinyFilter ShinyFilter::NONE     = 1 << 0;
-const ShinyFilter ShinyFilter::STAR     = 1 << 1;
-const ShinyFilter ShinyFilter::SQUARE   = 1 << 2;
-const ShinyFilter ShinyFilter::SHINY    = STAR | SQUARE;
-const ShinyFilter ShinyFilter::ALL      = NONE | STAR | SQUARE;
+const std::map<std::string, ShinyTypeInput> SHINY_TYPE_INPUT_TOKENS{
+    {"Unspecified",     ShinyTypeInput::UNSPECIFIED},
+    {"UnknownShiny",    ShinyTypeInput::UNKNOWN_SHINY},
+    {"NotShiny",        ShinyTypeInput::NOT_SHINY},
+    {"Star",            ShinyTypeInput::STAR},
+    {"Square",          ShinyTypeInput::SQUARE},
+};
+ShinyTypeInput parse_ShinyTypeInput(const std::string& token){
+    auto iter = SHINY_TYPE_INPUT_TOKENS.find(token);
+    if (iter == SHINY_TYPE_INPUT_TOKENS.end()){
+        throw "Invalid ShinySearchFilter: " + token;
+    }
+    return iter->second;
+}
+std::string to_string(ShinyTypeInput type){
+    switch (type){
+    case ShinyTypeInput::UNSPECIFIED:
+        return "Unspecified";
+    case ShinyTypeInput::UNKNOWN_SHINY:
+        return "Unknown Shiny";
+    case ShinyTypeInput::NOT_SHINY:
+        return "Not Shiny";
+    case ShinyTypeInput::STAR:
+        return "Star";
+    case ShinyTypeInput::SQUARE:
+        return "Square";
+    }
+    throw "Invalid Shiny Type";
+}
 
 
-std::string ShinyFilter::to_string() const{
+
+
+
+
+
+
+
+
+
+
+
+const ShinySearchFilter ShinySearchFilter::NONE     = 1 << 0;
+const ShinySearchFilter ShinySearchFilter::STAR     = 1 << 1;
+const ShinySearchFilter ShinySearchFilter::SQUARE   = 1 << 2;
+const ShinySearchFilter ShinySearchFilter::SHINY    = STAR | SQUARE;
+const ShinySearchFilter ShinySearchFilter::ALL      = NONE | STAR | SQUARE;
+
+
+std::string ShinySearchFilter::to_string() const{
     std::vector<const char*> str;
     if (*this & NONE){
         str.emplace_back("Not Shiny");
@@ -35,17 +77,17 @@ std::string ShinyFilter::to_string() const{
     return out;
 }
 
-const std::map<std::string, ShinyFilter> SHINY_FILTER_TOKENS{
-    {"Unspecified", ShinyFilter::ALL},
-    {"NotShiny",    ShinyFilter::NONE},
-    {"AnyShiny",    ShinyFilter::SHINY},
-    {"Star",        ShinyFilter::STAR},
-    {"Square",      ShinyFilter::SQUARE},
+const std::map<std::string, ShinySearchFilter> SHINY_FILTER_TOKENS{
+    {"Unspecified", ShinySearchFilter::ALL},
+    {"NotShiny",    ShinySearchFilter::NONE},
+    {"AnyShiny",    ShinySearchFilter::SHINY},
+    {"Star",        ShinySearchFilter::STAR},
+    {"Square",      ShinySearchFilter::SQUARE},
 };
-ShinyFilter::ShinyFilter(const std::string& token){
+ShinySearchFilter::ShinySearchFilter(const std::string& token){
     auto iter = SHINY_FILTER_TOKENS.find(token);
     if (iter == SHINY_FILTER_TOKENS.end()){
-        throw "Invalid ShinyFilter: " + token;
+        throw "Invalid ShinySearchFilter: " + token;
     }
     *this = iter->second;
 }

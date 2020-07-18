@@ -89,6 +89,9 @@ void calculate_shiny(const CalculateSeedParameters& params){
 
     if (found == 0){
         cout << "No seeds found. Input is either incorrect or the pokemon is hacked/illegal." << endl;
+    }else if (found > 10){
+        cout << "Many seeds found. Try making the filters more specific." << endl;
+        cout << "Note that if this is a forced shiny, there may legit be many possible seeds." << endl;
     }else{
         cout << "Seed(s) found. For legality checking, please verify remaining stats with RaidFinder." << endl;
     }

@@ -11,15 +11,15 @@ using std::endl;
 namespace SeedGenerator{
 namespace DistantSearch{
 
-double odds_shiny(ShinyFilter shiny){
+double odds_shiny(ShinySearchFilter shiny){
     double odds = 0;
-    if (shiny & ShinyFilter::NONE){
+    if (shiny & ShinySearchFilter::NONE){
         odds += 4095/4096.;
     }
-    if (shiny & ShinyFilter::STAR){
+    if (shiny & ShinySearchFilter::STAR){
         odds += 15/65536.;
     }
-    if (shiny & ShinyFilter::SQUARE){
+    if (shiny & ShinySearchFilter::SQUARE){
         odds += 1/65536.;
     }
     if (odds == 0){

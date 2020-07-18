@@ -23,7 +23,7 @@ using namespace SeedGenerator::DistantSearch;
 int main(){
 
     try{
-        cout << "SeedGenerator 1.2.1 - by Mysticial" << endl;
+        cout << "SeedGenerator 1.2.2 - by Mysticial" << endl;
         cout << endl;
 
         cout << "Choose an Option:" << endl;

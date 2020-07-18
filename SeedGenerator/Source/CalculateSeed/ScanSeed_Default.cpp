@@ -159,18 +159,49 @@ bool test_seed(const CalculateSeedParameters& params, uint64_t seed){
         shiny = getShinyType(sidtid, pid);
     }
 
-//    //  Shiny type doesn't match.
-//    if ((int)params.shiny() != shiny){
-//        return false;
-//    }
-
-    //  If not shiny, the bottom 31 bits of PID must match.
-    if (shiny == 0 && ((pid ^ params.pid()) & 0x7fffffff)){
-        return false;
+    //  Pokemon is specified as not-shiny. Require bottom 31 bits to match.
+    if (params.shiny() == ShinyTypeInput::NOT_SHINY){
+        if ((pid ^ params.pid()) & 0x7fffffff){
+            return false;
+        }
     }
 
-//    if (shiny != 0){
-//    }
+#if 0
+    //  TID/SID is specified. Use that to filter.
+    if (params.tid() >= 0){
+        uint32_t val = params.fid() ^ params.pid();
+        val = (val >> 16) ^ (val & 0xffff);
+
+//        uint16_t partial_xor = (uint16_t)((params.fid() >> 16) ^ params.fid() ^ pid);
+//        uint32_t expected_pid = pid;
+
+        //  Basic legality checks.
+        switch (params.shiny()){
+        case ShinyTypeInput::SQUARE:
+            if (val != 0){
+                throw "Invalid input. Square requires XOR == 0";
+            }
+//            expected_pid = partial_xor ^ 0;
+//            cout << tostr_hex_padded(params.pid() >> 16, 4) << " : " <<  tostr_hex_padded(expected_pid, 4) << endl;
+
+            break;
+        case ShinyTypeInput::STAR:
+            if (val != 1){
+                throw "Invalid input. Star requires XOR == 1";
+            }
+//            expected_pid = partial_xor ^ 1;
+            break;
+        case ShinyTypeInput::UNKNOWN_SHINY:
+            if (val >= 16){
+                throw "Invalid input. Shiny requires XOR < 16";
+            }
+        case ShinyTypeInput::NOT_SHINY:
+            if (val < 16){
+                throw "Invalid input. Non-shiny requires XOR >= 16";
+            }
+        }
+    }
+#endif
 
     //  Check the IVs.
     bool found = false;

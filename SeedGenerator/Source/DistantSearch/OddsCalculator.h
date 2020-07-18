@@ -9,7 +9,7 @@ namespace SeedGenerator{
 namespace DistantSearch{
 
 
-double odds_shiny(ShinyFilter shiny);
+double odds_shiny(ShinySearchFilter shiny);
 double odds_gender(GenderRatio ratio, GenderFilter filter);
 double odds_ivs(int max_ivs, const IvFilter& ivs);
 

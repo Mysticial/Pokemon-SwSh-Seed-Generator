@@ -25,11 +25,11 @@ public:
     static void parse_nature    (const char*& stream, SearchFilter& self);
 
 public:
-    ShinyFilter shiny   = ShinyFilter::SHINY;
+    ShinySearchFilter shiny = ShinySearchFilter::SHINY;
     IvFilter IVs;
-    char ability        = -1;
-    Nature nature       = Nature::UNSPECIFIED;
-    GenderFilter gender = GenderFilter::UNSPECIFIED;
+    char ability            = -1;
+    Nature nature           = Nature::UNSPECIFIED;
+    GenderFilter gender     = GenderFilter::UNSPECIFIED;
 };
 
 

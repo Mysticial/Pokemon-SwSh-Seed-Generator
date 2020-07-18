@@ -26,7 +26,7 @@ inline void test_seed_SSE41(
     uint64_t seed, uint64_t skips,
     uint64_t iterations
 ){
-    if (filter.shiny & ShinyFilter::NONE){
+    if (filter.shiny & ShinySearchFilter::NONE){
         test_seed_Default(reporter, pokemon, filter, seed, skips, iterations);
     }
     test_shiny_SSE41(reporter, pokemon, filter, seed, skips, iterations);
