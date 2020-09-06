@@ -1,6 +1,8 @@
 # SeedGen
 
-Discord Server: https://discord.gg/BSjDp27
+Support Discord:
+
+[<img src="https://canary.discordapp.com/api/guilds/695809740428673034/widget.png?style=banner2">](https://discord.gg/cQ4gWxN)
 
 SeedGen has two features:
  1. Calculate Seed
